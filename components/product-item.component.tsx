@@ -1,5 +1,7 @@
+"use client";
+
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 
 interface Props {
@@ -13,15 +15,23 @@ interface Props {
 }
 
 const ProductItem : React.FC<Props> = ({ product }) => {
+    const [title, setTitle] = useState(product.title)
+
     return (!_.isEmpty(product) && 
         <div className='border-2 border-gray-800 p-4 flex flex-col'>
-            <Image
-                src={product.thumbnail}
-                alt={product.title}
-                width={500}
-                height={264}
-            />
-            <h2 className='my-6 text-lg'><strong>{ product.title }</strong></h2>
+            <div className='h-40 bg-black'>
+                <Image
+                    className='h-full w-auto mx-auto'
+                    src={product.thumbnail}
+                    alt={product.title}
+                    width={500}
+                    height={264}
+                />
+            </div>
+            <div className='my-6'>
+                <h2 className='text-lg'><strong>{ title }</strong></h2>
+                <input type="text" defaultValue={title} onChange={($e) => setTitle($e.currentTarget.value)} />
+            </div>
             <div>
                 <span className='mr-2'><strong>${ Math.trunc(product.price * 100) / 100 }</strong></span>
                 <input className='w-12 text-center' type="number" min="0" defaultValue={1} name="amount" id="amount-input" />
