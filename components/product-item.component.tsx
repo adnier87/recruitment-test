@@ -15,7 +15,8 @@ interface Props {
 }
 
 const ProductItem : React.FC<Props> = ({ product }) => {
-    const [title, setTitle] = useState(product.title)
+    const [title, setTitle] = useState(product.title);
+    const [fontSize, setFontSize] = useState(20);
 
     return (!_.isEmpty(product) && 
         <div className='border-2 border-gray-800 p-4 flex flex-col'>
@@ -29,8 +30,9 @@ const ProductItem : React.FC<Props> = ({ product }) => {
                 />
             </div>
             <div className='my-6'>
-                <h2 className='text-lg'><strong>{ title }</strong></h2>
-                <input type="text" defaultValue={title} onChange={($e) => setTitle($e.currentTarget.value)} />
+                <h2><strong className="max-w-full" style={{fontSize}}>{ title }</strong></h2>
+                <input className="block" type="text" defaultValue={title} onChange={($e) => setTitle($e.currentTarget.value)} />
+                <label>Font size: <input type="range" defaultValue={fontSize} onChange={($e) => setFontSize(parseInt($e.currentTarget.value))} /></label>
             </div>
             <div>
                 <span className='mr-2'><strong>${ Math.trunc(product.price * 100) / 100 }</strong></span>
