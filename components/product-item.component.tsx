@@ -1,22 +1,29 @@
 "use client";
 
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import _ from 'lodash';
+import { ProductsContext } from './products-listing.component';
+import { IProduct } from '@/app/interfaces/products.interface';
 
 interface Props {
-    product: {
-        id: number,
-        price: number,
-        title: string,
-        description: string,
-        thumbnail: string
-    }
+    product: Pick<IProduct, "id" | "title" | "thumbnail" | "description" | "price" | "quantity">
 }
 
 const ProductItem : React.FC<Props> = ({ product }) => {
     const [title, setTitle] = useState(product.title);
     const [fontSize, setFontSize] = useState(20);
+    const {
+        productsState,
+        setProducts
+    } = useContext(ProductsContext);
+
+    const onQuantityChange = (value : string) : void => {
+        const idx : number = productsState.findIndex((p : IProduct) => p.id === product.id)
+        productsState[idx].quantity = value
+
+        setProducts([...productsState])
+    }
 
     return (!_.isEmpty(product) && 
         <div className='border-2 border-gray-800 p-4 flex flex-col'>
@@ -24,7 +31,7 @@ const ProductItem : React.FC<Props> = ({ product }) => {
                 <Image
                     className='h-full w-auto mx-auto'
                     src={product.thumbnail}
-                    alt={product.title}
+                    alt={title}
                     width={500}
                     height={264}
                 />
@@ -36,7 +43,7 @@ const ProductItem : React.FC<Props> = ({ product }) => {
             </div>
             <div>
                 <span className='mr-2'><strong>${ Math.trunc(product.price * 100) / 100 }</strong></span>
-                <input className='w-12 text-center' type="number" min="0" defaultValue={1} name="amount" id="amount-input" />
+                <input className='w-12 text-center' type="number" min="0" defaultValue={product.quantity} onChange={($e) => onQuantityChange($e.currentTarget.value)} />
             </div>
             <div className='my-3'>{ product.description }</div>
             <div className='flex flex-col items-center'>

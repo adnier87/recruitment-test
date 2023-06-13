@@ -5,7 +5,7 @@ const fetchProducts =  async () => {
 }
 
 export default async function Products () {
-    const { products } = await fetchProducts(); console.log(products);
+    const { products } = await fetchProducts();
 
     return (
         <main className='container mx-auto py-5'>
