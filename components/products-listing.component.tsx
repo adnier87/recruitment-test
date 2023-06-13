@@ -36,8 +36,8 @@ const ProductsListing : React.FC<IProps> = ({ products }) => {
             }
         }>
             <div className="grid grid-cols-4 gap-4">
-                {!_.isEmpty(productsState) && productsState.map((product : IProduct) => (
-                    <ProductItem product={{
+                {!_.isEmpty(productsState) && productsState.map((product : IProduct, idx : number) => (
+                    <ProductItem key={idx} product={{
                         id: product.id,
                         title: product.title,
                         price: product.price,
